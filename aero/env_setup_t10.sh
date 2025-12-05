@@ -191,6 +191,9 @@ if [ ! -d "ppl.cv" ]; then git clone https://github.com/openppl-public/ppl.cv.gi
 
 cd ppl.cv
 git checkout tags/v${PPLCV_VERSION} -b v${PPLCV_VERSION} || echo "Branch exists"
+
+export TORCH_CUDA_ARCH_LIST="7.5;8.0;8.6"
+
 ./build.sh cuda
 
 # =============================================================================
