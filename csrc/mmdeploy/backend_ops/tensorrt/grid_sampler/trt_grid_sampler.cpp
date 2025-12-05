@@ -109,9 +109,38 @@ int TRTGridSampler::enqueue(const nvinfer1::PluginTensorDesc *inputDesc,
 
   switch (data_type) {
     case nvinfer1::DataType::kFLOAT:
-      grid_sample<float>((float *)outputs[0], (float *)inputs[0], (float *)inputs[1],
-                         &(output_dims.d[0]), &(input_dims.d[0]), &(grid_dims.d[0]),
-                         input_dims.nbDims, interp_mode, padding_mode, mAlignCorners, stream);
+    // Convert TRT dims (int64_t*) → int32
+      std::vector<int> output_dims32(output_dims.nbDims);
+      std::vector<int> input_dims32(input_dims.nbDims);
+      std::vector<int> grid_dims32(grid_dims.nbDims);
+
+      for (int i = 0; i < output_dims.nbDims; ++i)
+          output_dims32[i] = static_cast<int>(output_dims.d[i]);
+
+      for (int i = 0; i < input_dims.nbDims; ++i)
+          input_dims32[i] = static_cast<int>(input_dims.d[i]);
+
+      for (int i = 0; i < grid_dims.nbDims; ++i)
+          grid_dims32[i] = static_cast<int>(grid_dims.d[i]);
+
+      // Call kernel with int32 dims
+      grid_sample<float>(
+          output,
+          input,
+          grid,
+          output_dims32.data(),
+          input_dims32.data(),
+          grid_dims32.data(),
+          output_dims.nbDims,
+          interpolation,
+          padding,
+          align_corners,
+          stream
+      );
+
+      // grid_sample<float>((float *)outputs[0], (float *)inputs[0], (float *)inputs[1],
+      //                    &(output_dims.d[0]), &(input_dims.d[0]), &(grid_dims.d[0]),
+      //                    input_dims.nbDims, interp_mode, padding_mode, mAlignCorners, stream);
       break;
     default:
       return 1;
