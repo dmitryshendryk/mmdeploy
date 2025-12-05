@@ -101,12 +101,12 @@ int GatherTopk::enqueue(const nvinfer1::PluginTensorDesc *inputDesc,
 
   switch (data_type) {
     case nvinfer1::DataType::kFLOAT:
-      gather_topk_impl<float>((float *)data, (int *)indices, dims, nbDims, indices_dims,
+      gather_topk_impl<float>((float *)data, (int *)indices, dims32.data(), nbDims, indices_dims32.data(),
                               indice_nbDims, (float *)output, stream);
       break;
 
     case nvinfer1::DataType::kINT32:
-      gather_topk_impl<int>((int *)data, (int *)indices, dims, nbDims, indices_dims, indice_nbDims,
+      gather_topk_impl<int>((int *)data, (int *)indices, dims32.data(), nbDims, indices_dims32.data(), indice_nbDims,
                             (int *)output, stream);
       break;
     default:

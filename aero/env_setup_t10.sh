@@ -130,7 +130,7 @@ echo "Checking for TensorRT Python bindings..."
 # Try to install the wheel directly if it exists in the TRT directory
 if [ -d "${TENSORRT_DIR}/python" ]; then
      echo "Installing TensorRT wheel from ${TENSORRT_DIR}/python..."
-     pip install ${TENSORRT_DIR}/python/*.whl || echo "Warning: Wheel install failed or already installed."
+     pip install ${TENSORRT_DIR}/python/*cp3${PYTHON_VERSION/3./}*.whl || echo "Warning: Wheel install failed or already installed."
 else
      echo "Warning: ${TENSORRT_DIR}/python not found. Assuming TensorRT is already in python path or system."
 fi
@@ -158,7 +158,7 @@ fi
 cd "$WORKSPACE_DIR"
 if [ ! -d "mmdeploy" ]; then 
     echo "Cloning MMDeploy (Main branch for TRT 10 support)..."
-    git clone -b main https://github.com/open-mmlab/mmdeploy
+    git clone -b main https://github.com/dmitryshendryk/mmdeploy
 fi
 
 cd mmdeploy
