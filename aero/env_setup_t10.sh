@@ -186,15 +186,15 @@ mim install -e .
 # =============================================================================
 # 7. Build PPL.CV
 # =============================================================================
-cd "$WORKSPACE_DIR"
-if [ ! -d "ppl.cv" ]; then git clone https://github.com/openppl-public/ppl.cv.git; fi
+# cd "$WORKSPACE_DIR"
+# if [ ! -d "ppl.cv" ]; then git clone https://github.com/openppl-public/ppl.cv.git; fi
 
-cd ppl.cv
-git checkout tags/v${PPLCV_VERSION} -b v${PPLCV_VERSION} || echo "Branch exists"
+# cd ppl.cv
+# git checkout tags/v${PPLCV_VERSION} -b v${PPLCV_VERSION} || echo "Branch exists"
 
-export TORCH_CUDA_ARCH_LIST="7.5;8.0;8.6"
-
-./build.sh cuda
+# export TORCH_CUDA_ARCH_LIST="7.5;8.0;8.6"
+# export CUDA_ARCH_BIN="7.5;8.0;8.6"
+# ./build.sh cuda
 
 # =============================================================================
 # 8. Build MMDeploy SDK
