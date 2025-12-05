@@ -78,8 +78,18 @@ size_t GatherTopk::getWorkspaceSize(const nvinfer1::PluginTensorDesc *inputs, in
 int GatherTopk::enqueue(const nvinfer1::PluginTensorDesc *inputDesc,
                         const nvinfer1::PluginTensorDesc *outputDesc, const void *const *inputs,
                         void *const *outputs, void *workSpace, cudaStream_t stream) TRT_NOEXCEPT {
-  const int *dims = &(inputDesc[0].dims.d[0]);
-  const int *indices_dims = &(inputDesc[1].dims.d[0]);
+  const int64_t* dims = &(inputDesc[0].dims.d[0]);
+  const int64_t* indices_dims = &(inputDesc[1].dims.d[0]);
+
+  // If later code expects int*, convert safely:
+  std::vector<int> dims32(inputDesc[0].dims.nbDims);
+  std::vector<int> indices_dims32(inputDesc[1].dims.nbDims);
+
+  for (int i = 0; i < inputDesc[0].dims.nbDims; ++i)
+      dims32[i] = static_cast<int>(dims[i]);
+  for (int i = 0; i < inputDesc[1].dims.nbDims; ++i)
+      indices_dims32[i] = static_cast<int>(indices_dims[i]);
+
   int nbDims = inputDesc[0].dims.nbDims;
   int indice_nbDims = inputDesc[1].dims.nbDims;
 

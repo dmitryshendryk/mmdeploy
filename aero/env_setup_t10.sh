@@ -172,7 +172,8 @@ rm -rf CMakeCache.txt
 
 echo "Running CMake for MMDeploy..."
 # Added -DCMAKE_PREFIX_PATH to ensure CMake finds the Pip-installed Torch
-cmake -DMMDEPLOY_TARGET_BACKENDS="ort;trt" \
+cmake -DMMDEPLOY_TARGET_BACKENDS="trt" \
+      -DMMDEPLOY_BUILD_ONNXRUNTIME_OPS=OFF \
       -DCUDNN_DIR="${CUDNN_DIR}" \
       -DTENSORRT_DIR="${TENSORRT_DIR}" \
       -DCMAKE_PREFIX_PATH="/opt/conda/envs/${ENV_NAME}/lib/python${PYTHON_VERSION}/site-packages/torch/share/cmake" \
@@ -214,7 +215,8 @@ cmake .. \
     -DONNXRUNTIME_DIR=${ONNXRUNTIME_DIR} \
     -DMMDEPLOY_BUILD_SDK_PYTHON_API=ON \
     -DMMDEPLOY_TARGET_DEVICES="cuda;cpu" \
-    -DMMDEPLOY_TARGET_BACKENDS="ort;trt" \
+    -DMMDEPLOY_TARGET_BACKENDS="trt" \
+    -DMMDEPLOY_BUILD_ONNXRUNTIME_OPS=OFF \
     -DMMDEPLOY_CODEBASES=all \
     -DCMAKE_PREFIX_PATH="/opt/conda/envs/${ENV_NAME}/lib/python${PYTHON_VERSION}/site-packages/torch/share/cmake"
 
